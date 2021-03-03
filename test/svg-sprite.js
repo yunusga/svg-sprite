@@ -21,7 +21,7 @@ const svg2png = require('svg2png');
 const should = require('should');
 const rimraf = require('rimraf');
 const glob = require('glob');
-const File = require('vinyl');
+const Vinyl = require('vinyl');
 const _ = require('lodash');
 const imageDiff = require('image-diff');
 const mustache = require('mustache');
@@ -68,7 +68,7 @@ function writeFiles(files) {
     let written = 0;
     for (const key in files) {
         if (_.isObject(files[key])) {
-            if (files[key].constructor === File) {
+            if (Vinyl.isVinyl(files[key])) {
                 fs.mkdirSync(path.dirname(files[key].path), { recursive: true });
                 fs.writeFileSync(files[key].path, files[key].contents);
                 ++written;

@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const File = require('vinyl');
+const Vinyl = require('vinyl');
 const yaml = require('js-yaml');
 const glob = require('glob');
 const SVGSpriter = require('../lib/svg-sprite');
@@ -109,7 +109,7 @@ function writeFiles(files) {
     let written = 0;
     for (const key in files) {
         if (_.isObject(files[key])) {
-            if (files[key].constructor === File) {
+            if (Vinyl.isVinyl(files[key])) {
                 fs.mkdirSync(path.dirname(files[key].path), { recursive: true });
                 fs.writeFileSync(files[key].path, files[key].contents);
                 ++written;
