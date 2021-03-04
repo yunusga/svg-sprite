@@ -32,9 +32,9 @@ const stylus = require('stylus');
 const SVGSpriter = require('../lib/svg-sprite');
 
 const capturePhantomScript = path.resolve(__dirname, 'script/capture.phantom.js');
-const cwdWeather = path.join(__dirname, 'fixture', 'svg', 'single');
-const cwdAlign = path.join(__dirname, 'fixture', 'svg', 'css');
-const dest = path.join(__dirname, '..', 'tmp');
+const cwdWeather = path.join(__dirname, 'fixture/svg/single');
+const cwdAlign = path.join(__dirname, 'fixture/svg/css');
+const dest = path.join(__dirname, '../tmp');
 
 // This is so that we can fix tests on Node.js > 10 since the Array.sort algorithm changed
 const isNodeGreaterThan10 = process.version.split('.')[0].slice(1) > 10;
@@ -166,7 +166,7 @@ before(done => {
 describe('svg-sprite', () => {
     const weather = glob.sync('**/weather*.svg', { cwd: cwdWeather });
     const align = glob.sync('**/*.svg', { cwd: cwdAlign });
-    const previewTemplate = fs.readFileSync(path.join(__dirname, 'tmpl', 'css.html'), 'utf-8');
+    const previewTemplate = fs.readFileSync(path.join(__dirname, 'tmpl/css.html'), 'utf-8');
 
     describe('with no arguments', () => {
         const spriter = new SVGSpriter({
@@ -288,10 +288,10 @@ describe('svg-sprite', () => {
                 // Vertical layout
                 it('vertical layout', done => {
                     compareSvg2Png(
-                        path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.vertical),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.vertical.png'),
-                        path.join(__dirname, 'expected', 'png', 'css.vertical.png'),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.vertical.diff.png'),
+                        path.join(__dirname, '../tmp/css/svg', svg.vertical),
+                        path.join(__dirname, '../tmp/css/png/css.vertical.png'),
+                        path.join(__dirname, 'expected/png/css.vertical.png'),
+                        path.join(__dirname, '../tmp/css/png/css.vertical.diff.png'),
                         done,
                         'The vertical sprite doesn\'t match the expected one!'
                     );
@@ -300,10 +300,10 @@ describe('svg-sprite', () => {
                 // Horizontal layout
                 it('horizontal layout', done => {
                     compareSvg2Png(
-                        path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.horizontal),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.horizontal.png'),
-                        path.join(__dirname, 'expected', 'png', 'css.horizontal.png'),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.horizontal.diff.png'),
+                        path.join(__dirname, '../tmp/css/svg', svg.horizontal),
+                        path.join(__dirname, '../tmp/css/png/css.horizontal.png'),
+                        path.join(__dirname, 'expected/png/css.horizontal.png'),
+                        path.join(__dirname, '../tmp/css/png/css.horizontal.diff.png'),
                         done,
                         'The horizontal sprite doesn\'t match the expected one!'
                     );
@@ -312,10 +312,10 @@ describe('svg-sprite', () => {
                 // Diagonal layout
                 it('diagonal layout', done => {
                     compareSvg2Png(
-                        path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.diagonal),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.diagonal.png'),
-                        path.join(__dirname, 'expected', 'png', 'css.diagonal.png'),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.diagonal.diff.png'),
+                        path.join(__dirname, '../tmp/css/svg', svg.diagonal),
+                        path.join(__dirname, '../tmp/css/png/css.diagonal.png'),
+                        path.join(__dirname, 'expected/png/css.diagonal.png'),
+                        path.join(__dirname, '../tmp/css/png/css.diagonal.diff.png'),
                         done,
                         'The diagonal sprite doesn\'t match the expected one!'
                     );
@@ -324,10 +324,10 @@ describe('svg-sprite', () => {
                 // Packed layout
                 it('packed layout', done => {
                     compareSvg2Png(
-                        path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.packed),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.packed.png'),
-                        path.join(__dirname, 'expected', 'png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
-                        path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.packed.diff.png'),
+                        path.join(__dirname, '../tmp/css/svg', svg.packed),
+                        path.join(__dirname, '../tmp/css/png/css.packed.png'),
+                        path.join(__dirname, 'expected/png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
+                        path.join(__dirname, '../tmp/css/png/css.packed.diff.png'),
                         done,
                         'The packed sprite doesn\'t match the expected one!'
                     );
@@ -340,16 +340,16 @@ describe('svg-sprite', () => {
                 it('CSS format', done => {
                     data.css = '../sprite.css';
                     const out = mustache.render(previewTemplate, data);
-                    const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'css.html'), out);
-                    const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.html.png');
+                    const preview = writeFile(path.join(__dirname, '../tmp/css/html/css.html'), out);
+                    const previewImage = path.join(__dirname, '../tmp/css/png/css.html.png');
                     preview.should.be.ok;
 
                     capturePhantom(preview, previewImage, error => {
                         should(error).not.ok;
                         imageDiff({
                             actualImage: previewImage,
-                            expectedImage: path.join(__dirname, 'expected', 'png', 'css.html.png'),
-                            diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.html.diff.png')
+                            expectedImage: path.join(__dirname, 'expected/png/css.html.png'),
+                            diffImage: path.join(__dirname, '../tmp/css/png/css.html.diff.png')
                         }, (error, imagesAreSame) => {
                             should(error).not.ok;
                             should.ok(imagesAreSame, 'The generated CSS preview doesn\'t match the expected one!');
@@ -361,24 +361,24 @@ describe('svg-sprite', () => {
                 // Sass
                 it('Sass format', done => {
                     sass.render({
-                        file: path.join(__dirname, '..', 'tmp', 'css', 'sprite.scss')
+                        file: path.join(__dirname, '../tmp/css/sprite.scss')
                     },
                     (err, scssText) => {
                         should(err).not.ok;
-                        should(writeFile(path.join(__dirname, '..', 'tmp', 'css', 'sprite.scss.css'), scssText.css)).be.ok;
+                        should(writeFile(path.join(__dirname, '../tmp/css/sprite.scss.css'), scssText.css)).be.ok;
 
                         data.css = '../sprite.scss.css';
                         const out = mustache.render(previewTemplate, data);
-                        const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'scss.html'), out);
-                        const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'scss.html.png');
+                        const preview = writeFile(path.join(__dirname, '../tmp/css/html/scss.html'), out);
+                        const previewImage = path.join(__dirname, '../tmp/css/png/scss.html.png');
                         preview.should.be.ok;
 
                         capturePhantom(preview, previewImage, error => {
                             should(error).not.ok;
                             imageDiff({
                                 actualImage: previewImage,
-                                expectedImage: path.join(__dirname, 'expected', 'png', 'css.html.png'),
-                                diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'scss.html.diff.png')
+                                expectedImage: path.join(__dirname, 'expected/png/css.html.png'),
+                                diffImage: path.join(__dirname, '../tmp/css/png/scss.html.diff.png')
                             }, (error, imagesAreSame) => {
                                 should(error).not.ok;
                                 should.ok(imagesAreSame, 'The generated Sass preview doesn\'t match the expected one!');
@@ -391,26 +391,26 @@ describe('svg-sprite', () => {
 
                 // LESS
                 it('LESS format', done => {
-                    const lessFile = path.join(__dirname, '..', 'tmp', 'css', 'sprite.less');
+                    const lessFile = path.join(__dirname, '../tmp/css/sprite.less');
                     fs.readFile(lessFile, (err, lessText) => {
                         should(err).not.ok;
 
                         less.render(lessText.toString(), {}, (error, output) => {
                             should(error).not.ok;
-                            should(writeFile(path.join(__dirname, '..', 'tmp', 'css', 'sprite.less.css'), output.css)).be.ok;
+                            should(writeFile(path.join(__dirname, '../tmp/css/sprite.less.css'), output.css)).be.ok;
 
                             data.css = '../sprite.less.css';
                             const out = mustache.render(previewTemplate, data);
-                            const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'less.html'), out);
-                            const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'less.html.png');
+                            const preview = writeFile(path.join(__dirname, '../tmp/css/html/less.html'), out);
+                            const previewImage = path.join(__dirname, '../tmp/css/png/less.html.png');
                             preview.should.be.ok;
 
                             capturePhantom(preview, previewImage, error => {
                                 should(error).not.ok;
                                 imageDiff({
                                     actualImage: previewImage,
-                                    expectedImage: path.join(__dirname, 'expected', 'png', 'css.html.png'),
-                                    diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'less.html.diff.png')
+                                    expectedImage: path.join(__dirname, 'expected/png/css.html.png'),
+                                    diffImage: path.join(__dirname, '../tmp/css/png/less.html.diff.png')
                                 }, (error, imagesAreSame) => {
                                     should(error).not.ok;
                                     should.ok(imagesAreSame, 'The generated LESS preview doesn\'t match the expected one!');
@@ -423,26 +423,26 @@ describe('svg-sprite', () => {
 
                 // Stylus
                 it('Stylus format', done => {
-                    const stylusFile = path.join(__dirname, '..', 'tmp', 'css', 'sprite.styl');
+                    const stylusFile = path.join(__dirname, '../tmp/css/sprite.styl');
                     fs.readFile(stylusFile, (err, stylusText) => {
                         should(err).not.ok;
 
                         stylus.render(stylusText.toString(), {}, (error, output) => {
                             should(error).not.ok;
-                            should(writeFile(path.join(__dirname, '..', 'tmp', 'css', 'sprite.styl.css'), output)).be.ok;
+                            should(writeFile(path.join(__dirname, '../tmp/css/sprite.styl.css'), output)).be.ok;
 
                             data.css = '../sprite.styl.css';
                             const out = mustache.render(previewTemplate, data);
-                            const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'styl.html'), out);
-                            const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'styl.html.png');
+                            const preview = writeFile(path.join(__dirname, '../tmp/css/html/styl.html'), out);
+                            const previewImage = path.join(__dirname, '../tmp/css/png/styl.html.png');
                             preview.should.be.ok;
 
                             capturePhantom(preview, previewImage, error => {
                                 should(error).not.ok;
                                 imageDiff({
                                     actualImage: previewImage,
-                                    expectedImage: path.join(__dirname, 'expected', 'png', 'css.html.png'),
-                                    diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'styl.html.diff.png')
+                                    expectedImage: path.join(__dirname, 'expected/png/css.html.png'),
+                                    diffImage: path.join(__dirname, '../tmp/css/png/styl.html.diff.png')
                                 }, (error, imagesAreSame) => {
                                     should(error).not.ok;
                                     should.ok(imagesAreSame, 'The generated Stylus preview doesn\'t match the expected one!');
@@ -480,10 +480,10 @@ describe('svg-sprite', () => {
                 // Packed layout
                 it('packed layout', done => {
                     compareSvg2Png(
-                        path.join(__dirname, '..', 'tmp', 'view', 'svg', svg.packed),
-                        path.join(__dirname, '..', 'tmp', 'view', 'png', 'view.packed.png'),
-                        path.join(__dirname, 'expected', 'png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
-                        path.join(__dirname, '..', 'tmp', 'view', 'png', 'view.packed.diff.png'),
+                        path.join(__dirname, '../tmp/view/svg', svg.packed),
+                        path.join(__dirname, '../tmp/view/png/view.packed.png'),
+                        path.join(__dirname, 'expected/png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
+                        path.join(__dirname, '../tmp/view/png/view.packed.diff.png'),
                         done,
                         'The packed sprite doesn\'t match the expected one!'
                     );
@@ -494,18 +494,18 @@ describe('svg-sprite', () => {
             //describe('creates a visually correct stylesheet resource in', () => {
             //    it('CSS format', done => {
             //        data.css = '../sprite.css';
-            //        const previewTemplate = fs.readFileSync(path.join(__dirname, 'tmpl', 'view.html'), 'utf-8');
+            //        const previewTemplate = fs.readFileSync(path.join(__dirname, 'tmpl/view.html'), 'utf-8');
             //        const out = mustache.render(previewTemplate, data);
-            //        const preview = writeFile(path.join(__dirname, '..', 'tmp', 'view', 'html', 'view.html'), out);
-            //        const previewImage = path.join(__dirname, '..', 'tmp', 'view', 'png', 'view.html.png');
+            //        const preview = writeFile(path.join(__dirname, '../tmp/view/html/view.html'), out);
+            //        const previewImage = path.join(__dirname, '../tmp/view/png/view.html.png');
             //        preview.should.be.ok;
             //
             //        capturePhantom(preview, previewImage, error => {
             //            should(error).not.ok;
             //            imageDiff({
             //                actualImage: previewImage,
-            //                expectedImage: path.join(__dirname, 'expected', 'png', 'view.html.png'),
-            //                diffImage: path.join(__dirname, '..', 'tmp', 'view', 'png', 'view.html.diff.png')
+            //                expectedImage: path.join(__dirname, 'expected/png/view.html.png'),
+            //                diffImage: path.join(__dirname, '../tmp/view/png/view.html.diff.png')
             //            }, (error, imagesAreSame) => {
             //                should(error).not.ok;
             //                should.ok(imagesAreSame, 'The generated CSS preview doesn\'t match the expected one!');
@@ -527,7 +527,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.centered.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.centered.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -557,10 +557,10 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.vertical),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.vertical.centered.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.vertical.centered.png'),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.vertical.centered.diff.png'),
+                    path.join(__dirname, '../tmp/css/svg', svg.vertical),
+                    path.join(__dirname, '../tmp/css/png/css.vertical.centered.png'),
+                    path.join(__dirname, 'expected/png/css.vertical.centered.png'),
+                    path.join(__dirname, '../tmp/css/png/css.vertical.centered.diff.png'),
                     done,
                     'The vertical sprite doesn\'t match the expected one!'
                 );
@@ -569,16 +569,16 @@ describe('svg-sprite', () => {
             it('creates a visually correct stylesheet resource', done => {
                 data.css = '../sprite.centered.css';
                 const out = mustache.render(previewTemplate, data);
-                const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'css.vertical.centered.html'), out);
-                const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.vertical.centered.html.png');
+                const preview = writeFile(path.join(__dirname, '../tmp/css/html/css.vertical.centered.html'), out);
+                const previewImage = path.join(__dirname, '../tmp/css/png/css.vertical.centered.html.png');
                 preview.should.be.ok;
 
                 capturePhantom(preview, previewImage, error => {
                     should(error).not.ok;
                     imageDiff({
                         actualImage: previewImage,
-                        expectedImage: path.join(__dirname, 'expected', 'png', 'css.vertical.centered.html.png'),
-                        diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.centered.html.diff.png')
+                        expectedImage: path.join(__dirname, 'expected/png/css.vertical.centered.html.png'),
+                        diffImage: path.join(__dirname, '../tmp/css/png/css.centered.html.diff.png')
                     }, (error, imagesAreSame) => {
                         should(error).not.ok;
                         should.ok(imagesAreSame, 'The generated CSS preview doesn\'t match the expected one!');
@@ -593,7 +593,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.centered.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.centered.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -623,10 +623,10 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.horizontal),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.horizontal.centered.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.horizontal.centered.png'),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.horizontal.centered.diff.png'),
+                    path.join(__dirname, '../tmp/css/svg', svg.horizontal),
+                    path.join(__dirname, '../tmp/css/png/css.horizontal.centered.png'),
+                    path.join(__dirname, 'expected/png/css.horizontal.centered.png'),
+                    path.join(__dirname, '../tmp/css/png/css.horizontal.centered.diff.png'),
                     done,
                     'The horizontal sprite doesn\'t match the expected one!'
                 );
@@ -634,24 +634,24 @@ describe('svg-sprite', () => {
 
             it('creates a visually correct stylesheet resource', done => {
                 sass.render({
-                    file: path.join(__dirname, '..', 'tmp', 'css', 'sprite.centered.scss')
+                    file: path.join(__dirname, '../tmp/css/sprite.centered.scss')
                 },
                 (err, scssText) => {
                     should(err).not.ok;
-                    should(writeFile(path.join(__dirname, '..', 'tmp', 'css', 'sprite.centered.scss.css'), scssText.css)).be.ok;
+                    should(writeFile(path.join(__dirname, '../tmp/css/sprite.centered.scss.css'), scssText.css)).be.ok;
 
                     data.css = '../sprite.centered.scss.css';
                     const out = mustache.render(previewTemplate, data);
-                    const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'scss.horizontal.centered.html'), out);
-                    const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'scss.horizontal.centered.html.png');
+                    const preview = writeFile(path.join(__dirname, '../tmp/css/html/scss.horizontal.centered.html'), out);
+                    const previewImage = path.join(__dirname, '../tmp/css/png/scss.horizontal.centered.html.png');
                     preview.should.be.ok;
 
                     capturePhantom(preview, previewImage, error => {
                         should(error).not.ok;
                         imageDiff({
                             actualImage: previewImage,
-                            expectedImage: path.join(__dirname, 'expected', 'png', 'css.horizontal.centered.html.png'),
-                            diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'scss.horizontal.centered.html.diff.png')
+                            expectedImage: path.join(__dirname, 'expected/png/css.horizontal.centered.html.png'),
+                            diffImage: path.join(__dirname, '../tmp/css/png/scss.horizontal.centered.html.diff.png')
                         }, (error, imagesAreSame) => {
                             should(error).not.ok;
                             should.ok(imagesAreSame, 'The generated Sass preview doesn\'t match the expected one!');
@@ -668,7 +668,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.centered.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.centered.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -698,36 +698,36 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'css', 'svg', svg.packed),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.packed.centered.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.packed.aligned.png'),
-                    path.join(__dirname, '..', 'tmp', 'css', 'png', 'css.packed.centered.diff.png'),
+                    path.join(__dirname, '../tmp/css/svg', svg.packed),
+                    path.join(__dirname, '../tmp/css/png/css.packed.centered.png'),
+                    path.join(__dirname, 'expected/png/css.packed.aligned.png'),
+                    path.join(__dirname, '../tmp/css/png/css.packed.centered.diff.png'),
                     done,
                     'The packed sprite doesn\'t match the expected one!'
                 );
             });
 
             it('creates a visually correct stylesheet resource', done => {
-                const lessFile = path.join(__dirname, '..', 'tmp', 'css', 'sprite.centered.less');
+                const lessFile = path.join(__dirname, '../tmp/css/sprite.centered.less');
                 fs.readFile(lessFile, (err, lessText) => {
                     should(err).not.ok;
 
                     less.render(lessText.toString(), {}, (error, output) => {
                         should(error).not.ok;
-                        should(writeFile(path.join(__dirname, '..', 'tmp', 'css', 'sprite.centered.less.css'), output.css)).be.ok;
+                        should(writeFile(path.join(__dirname, '../tmp/css/sprite.centered.less.css'), output.css)).be.ok;
 
                         data.css = '../sprite.centered.less.css';
                         const out = mustache.render(previewTemplate, data);
-                        const preview = writeFile(path.join(__dirname, '..', 'tmp', 'css', 'html', 'less.packed.centered.html'), out);
-                        const previewImage = path.join(__dirname, '..', 'tmp', 'css', 'png', 'less.packed.centered.html.png');
+                        const preview = writeFile(path.join(__dirname, '../tmp/css/html/less.packed.centered.html'), out);
+                        const previewImage = path.join(__dirname, '../tmp/css/png/less.packed.centered.html.png');
                         preview.should.be.ok;
 
                         capturePhantom(preview, previewImage, error => {
                             should(error).not.ok;
                             imageDiff({
                                 actualImage: previewImage,
-                                expectedImage: path.join(__dirname, 'expected', 'png', 'css.packed.aligned.html.png'),
-                                diffImage: path.join(__dirname, '..', 'tmp', 'css', 'png', 'less.packed.centered.html.diff.png')
+                                expectedImage: path.join(__dirname, 'expected/png/css.packed.aligned.html.png'),
+                                diffImage: path.join(__dirname, '../tmp/css/png/less.packed.centered.html.diff.png')
                             }, (error, imagesAreSame) => {
                                 should(error).not.ok;
                                 should.ok(imagesAreSame, 'The generated LESS preview doesn\'t match the expected one!');
@@ -750,7 +750,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.mixed.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.mixed.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -780,10 +780,10 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'view', 'svg', svg.vertical),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.vertical.mixed.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.vertical.mixed.png'),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.vertical.mixed.diff.png'),
+                    path.join(__dirname, '../tmp/view/svg', svg.vertical),
+                    path.join(__dirname, '../tmp/view/png/css.vertical.mixed.png'),
+                    path.join(__dirname, 'expected/png/css.vertical.mixed.png'),
+                    path.join(__dirname, '../tmp/view/png/css.vertical.mixed.diff.png'),
                     done,
                     'The vertical sprite doesn\'t match the expected one!'
                 );
@@ -792,16 +792,16 @@ describe('svg-sprite', () => {
             it('creates a visually correct stylesheet resource', done => {
                 data.css = '../sprite.mixed.css';
                 const out = mustache.render(previewTemplate, data);
-                const preview = writeFile(path.join(__dirname, '..', 'tmp', 'view', 'html', 'css.vertical.mixed.html'), out);
-                const previewImage = path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.vertical.mixed.html.png');
+                const preview = writeFile(path.join(__dirname, '../tmp/view/html/css.vertical.mixed.html'), out);
+                const previewImage = path.join(__dirname, '../tmp/view/png/css.vertical.mixed.html.png');
                 preview.should.be.ok;
 
                 capturePhantom(preview, previewImage, error => {
                     should(error).not.ok;
                     imageDiff({
                         actualImage: previewImage,
-                        expectedImage: path.join(__dirname, 'expected', 'png', 'css.vertical.mixed.html.png'),
-                        diffImage: path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.mixed.html.diff.png')
+                        expectedImage: path.join(__dirname, 'expected/png/css.vertical.mixed.html.png'),
+                        diffImage: path.join(__dirname, '../tmp/view/png/css.mixed.html.diff.png')
                     }, (error, imagesAreSame) => {
                         should(error).not.ok;
                         should.ok(imagesAreSame, 'The generated CSS preview doesn\'t match the expected one!');
@@ -816,7 +816,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.mixed.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.mixed.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -850,10 +850,10 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'view', 'svg', svg.horizontal),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.horizontal.mixed.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.horizontal.mixed.png'),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.horizontal.mixed.diff.png'),
+                    path.join(__dirname, '../tmp/view/svg', svg.horizontal),
+                    path.join(__dirname, '../tmp/view/png/css.horizontal.mixed.png'),
+                    path.join(__dirname, 'expected/png/css.horizontal.mixed.png'),
+                    path.join(__dirname, '../tmp/view/png/css.horizontal.mixed.diff.png'),
                     done,
                     'The horizontal sprite doesn\'t match the expected one!'
                 );
@@ -861,24 +861,24 @@ describe('svg-sprite', () => {
 
             it('creates a visually correct stylesheet resource', done => {
                 sass.render({
-                    file: path.join(__dirname, '..', 'tmp', 'view', 'sprite.mixed.scss')
+                    file: path.join(__dirname, '../tmp/view/sprite.mixed.scss')
                 },
                 (err, scssText) => {
                     should(err).not.ok;
-                    should(writeFile(path.join(__dirname, '..', 'tmp', 'view', 'sprite.mixed.scss.css'), scssText.css)).be.ok;
+                    should(writeFile(path.join(__dirname, '../tmp/view/sprite.mixed.scss.css'), scssText.css)).be.ok;
 
                     data.css = '../sprite.mixed.scss.css';
                     const out = mustache.render(previewTemplate, data);
-                    const preview = writeFile(path.join(__dirname, '..', 'tmp', 'view', 'html', 'scss.horizontal.mixed.html'), out);
-                    const previewImage = path.join(__dirname, '..', 'tmp', 'view', 'png', 'scss.horizontal.mixed.html.png');
+                    const preview = writeFile(path.join(__dirname, '../tmp/view/html/scss.horizontal.mixed.html'), out);
+                    const previewImage = path.join(__dirname, '../tmp/view/png/scss.horizontal.mixed.html.png');
                     preview.should.be.ok;
 
                     capturePhantom(preview, previewImage, error => {
                         should(error).not.ok;
                         imageDiff({
                             actualImage: previewImage,
-                            expectedImage: path.join(__dirname, 'expected', 'png', 'css.horizontal.mixed.html.png'),
-                            diffImage: path.join(__dirname, '..', 'tmp', 'view', 'png', 'scss.horizontal.mixed.html.diff.png')
+                            expectedImage: path.join(__dirname, 'expected/png/css.horizontal.mixed.html.png'),
+                            diffImage: path.join(__dirname, '../tmp/view/png/scss.horizontal.mixed.html.diff.png')
                         }, (error, imagesAreSame) => {
                             should(error).not.ok;
                             should.ok(imagesAreSame, 'The generated Sass preview doesn\'t match the expected one!');
@@ -895,7 +895,7 @@ describe('svg-sprite', () => {
                 spriter = new SVGSpriter({
                     dest,
                     shape: {
-                        align: path.join(__dirname, 'fixture', 'yaml', 'align.mixed.yaml'),
+                        align: path.join(__dirname, 'fixture/yaml/align.mixed.yaml'),
                         dimension: {
                             maxWidth: 200,
                             maxHeight: 200
@@ -925,36 +925,36 @@ describe('svg-sprite', () => {
 
             it('creates visually correct sprite', done => {
                 compareSvg2Png(
-                    path.join(__dirname, '..', 'tmp', 'view', 'svg', svg.packed),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.packed.mixed.png'),
-                    path.join(__dirname, 'expected', 'png', 'css.packed.aligned.png'),
-                    path.join(__dirname, '..', 'tmp', 'view', 'png', 'css.packed.mixed.diff.png'),
+                    path.join(__dirname, '../tmp/view/svg', svg.packed),
+                    path.join(__dirname, '../tmp/view/png/css.packed.mixed.png'),
+                    path.join(__dirname, 'expected/png/css.packed.aligned.png'),
+                    path.join(__dirname, '../tmp/view/png/css.packed.mixed.diff.png'),
                     done,
                     'The packed sprite doesn\'t match the expected one!'
                 );
             });
 
             it('creates a visually correct stylesheet resource', done => {
-                const lessFile = path.join(__dirname, '..', 'tmp', 'view', 'sprite.mixed.less');
+                const lessFile = path.join(__dirname, '../tmp/view/sprite.mixed.less');
                 fs.readFile(lessFile, (err, lessText) => {
                     should(err).not.ok;
 
                     less.render(lessText.toString(), {}, (error, output) => {
                         should(error).not.ok;
-                        should(writeFile(path.join(__dirname, '..', 'tmp', 'view', 'sprite.mixed.less.css'), output.css)).be.ok;
+                        should(writeFile(path.join(__dirname, '../tmp/view/sprite.mixed.less.css'), output.css)).be.ok;
 
                         data.css = '../sprite.mixed.less.css';
                         const out = mustache.render(previewTemplate, data);
-                        const preview = writeFile(path.join(__dirname, '..', 'tmp', 'view', 'html', 'less.packed.mixed.html'), out);
-                        const previewImage = path.join(__dirname, '..', 'tmp', 'view', 'png', 'less.packed.mixed.html.png');
+                        const preview = writeFile(path.join(__dirname, '../tmp/view/html/less.packed.mixed.html'), out);
+                        const previewImage = path.join(__dirname, '../tmp/view/png/less.packed.mixed.html.png');
                         preview.should.be.ok;
 
                         capturePhantom(preview, previewImage, error => {
                             should(error).not.ok;
                             imageDiff({
                                 actualImage: previewImage,
-                                expectedImage: path.join(__dirname, 'expected', 'png', 'css.packed.aligned.html.png'),
-                                diffImage: path.join(__dirname, '..', 'tmp', 'view', 'png', 'less.packed.mixed.html.diff.png')
+                                expectedImage: path.join(__dirname, 'expected/png/css.packed.aligned.html.png'),
+                                diffImage: path.join(__dirname, '../tmp/view/png/less.packed.mixed.html.diff.png')
                             }, (error, imagesAreSame) => {
                                 should(error).not.ok;
                                 should.ok(imagesAreSame, 'The generated LESS preview doesn\'t match the expected one!');
