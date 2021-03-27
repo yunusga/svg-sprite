@@ -114,6 +114,7 @@
         5
       ],
       "max-params": "off",
+      "no-bitwise": "error",
       "no-labels": "off",
       "no-negated-condition": "off",
       "object-curly-spacing": [
