@@ -52,6 +52,7 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
     "c8": "^7.7.0",
     "less": "^4.1.1",
     "looks-same": "^7.3.0",
@@ -104,6 +105,10 @@
   },
   "xo": {
     "esnext": true,
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "requireConfigFile": false
+    },
     "space": 4,
     "rules": {
       "capitalized-comments": "off",
