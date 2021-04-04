@@ -108,13 +108,15 @@ function addConfigMap(store, path, value) {
 function writeFiles(files) {
     let written = 0;
     for (const key in files) {
-        if (_.isObject(files[key])) {
-            if (Vinyl.isVinyl(files[key])) {
-                fs.mkdirSync(path.dirname(files[key].path), { recursive: true });
-                fs.writeFileSync(files[key].path, files[key].contents);
+        const file = files[key];
+
+        if (_.isObject(file)) {
+            if (Vinyl.isVinyl(file)) {
+                fs.mkdirSync(path.dirname(file.path), { recursive: true });
+                fs.writeFileSync(file.path, file.contents);
                 ++written;
             } else {
-                written += writeFiles(files[key]);
+                written += writeFiles(file);
             }
         }
     }
