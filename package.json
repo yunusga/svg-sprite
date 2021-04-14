@@ -56,7 +56,6 @@
     "less": "^4.1.1",
     "looks-same": "^7.3.0",
     "mocha": "^8.3.2",
-    "rimraf": "^3.0.2",
     "sass": "^1.32.12",
     "should": "^13.2.3",
     "stylus": "^0.54.8",
@@ -115,6 +114,7 @@
       "max-params": "off",
       "no-bitwise": "error",
       "no-negated-condition": "off",
+      "node/prefer-promises/fs": "off",
       "object-curly-spacing": [
         "error",
         "always"

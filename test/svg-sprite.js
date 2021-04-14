@@ -19,7 +19,6 @@ const path = require('path');
 const { promisify } = require('util');
 const svg2png = require('svg2png');
 const should = require('should');
-const rimraf = require('rimraf');
 const glob = require('glob');
 const Vinyl = require('vinyl');
 const _ = require('lodash');
@@ -163,7 +162,11 @@ function compareSvg2Png(svg, png, expected, diff, done, msg) {
 }
 
 before(done => {
-    rimraf(path.join(__dirname, '../tmp'), () => {
+    fs.rmdir(path.join(__dirname, '../tmp'), { recursive: true }, error => {
+        if (error) {
+            done(error);
+        }
+
         done();
     });
 });
