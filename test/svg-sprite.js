@@ -35,8 +35,6 @@ const cwdWeather = path.join(__dirname, 'fixture/svg/single');
 const cwdAlign = path.join(__dirname, 'fixture/svg/css');
 const dest = path.join(__dirname, '../tmp');
 
-// This is so that we can fix tests on Node.js > 10 since the Array.sort algorithm changed
-const isNodeGreaterThan10 = process.version.split('.')[0].slice(1) > 10;
 const readFileP = promisify(fs.readFile);
 const writeFileP = promisify(fs.writeFile);
 
@@ -334,7 +332,7 @@ describe('svg-sprite', () => {
                     compareSvg2Png(
                         path.join(__dirname, '../tmp/css/svg', svg.packed),
                         path.join(__dirname, '../tmp/css/png/css.packed.png'),
-                        path.join(__dirname, 'expected/png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
+                        path.join(__dirname, 'expected/png/css.packed.png'),
                         path.join(__dirname, '../tmp/css/png/css.packed.diff.png'),
                         done,
                         'The packed sprite doesn\'t match the expected one!'
@@ -479,7 +477,7 @@ describe('svg-sprite', () => {
                     compareSvg2Png(
                         path.join(__dirname, '../tmp/view/svg', svg.packed),
                         path.join(__dirname, '../tmp/view/png/view.packed.png'),
-                        path.join(__dirname, 'expected/png', isNodeGreaterThan10 ? 'css.packed.12.png' : 'css.packed.png'),
+                        path.join(__dirname, 'expected/png/css.packed.png'),
                         path.join(__dirname, '../tmp/view/png/view.packed.diff.png'),
                         done,
                         'The packed sprite doesn\'t match the expected one!'
